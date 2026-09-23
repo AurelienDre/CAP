@@ -28,4 +28,18 @@
         est.\n\n
     </string>
     <string name="addAPlace">Navigate to second fragment to add a place</string>
+    <string name="add_place">Ajout d\'un lieu</string>
+    <string name="place_name">Nom du lieu</string>
+    <string name="place_name_placeholder">Entrez le nom du lieu</string>
+    <string name="illustrations">Illustrations</string>
+    <string name="illustrations_selection">Sélectionner des photos du site</string>
+    <string name="illustrations_selected">Aucune photo sélectionnée</string>
+    <string name="place_map">Plan du site</string>
+    <string name="place_map_selection">Sélectionner le plan</string>
+    <string name="place_map_selected">Aucun plan sélectionné</string>
+    <string name="description">Descriptif</string>
+    <string name="place_description">Description du site</string>
+    <string name="save">Enregistrer</string>
+    <string name="contact">Contact</string>
+    <string name="contact_list">"Téléphone / Email "</string>
 </resources>

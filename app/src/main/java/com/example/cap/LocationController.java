@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import org.osmdroid.util.GeoPoint;
@@ -19,9 +20,8 @@ public class LocationController implements LocationListener {
     private final MapView mapView;
     private final DirectedLocationOverlay locationOverlay;
 
-    private LocationManager locationManager;
+    private final LocationManager locationManager;
 
-    private double speed = 0.0;
     private float azimuthAngleSpeed = 0.0f;
 
     public LocationController(
@@ -60,9 +60,9 @@ public class LocationController implements LocationListener {
     }
 
     @Override
-    public void onLocationChanged(Location localisation) {
+    public void onLocationChanged(@NonNull Location localisation) {
 
-        GeoPoint nouvelleLocalisation =
+        GeoPoint newLocalisation =
                 new GeoPoint(localisation);
 
         if (!locationOverlay.isEnabled()) {
@@ -70,23 +70,22 @@ public class LocationController implements LocationListener {
             locationOverlay.setEnabled(true);
 
             mapView.getController()
-                    .animateTo(nouvelleLocalisation);
+                    .animateTo(newLocalisation);
         }
 
-        GeoPoint localisationPrecedente =
-                locationOverlay.getLocation();
+        GeoPoint PreviousLocalisation = locationOverlay.getLocation();
 
-        locationOverlay.setLocation(nouvelleLocalisation);
+        locationOverlay.setLocation(newLocalisation);
 
         locationOverlay.setAccuracy(
                 (int) localisation.getAccuracy()
         );
 
-        if (localisationPrecedente != null
+        if (PreviousLocalisation != null
                 && LocationManager.GPS_PROVIDER.equals(
                 localisation.getProvider())) {
 
-            speed = localisation.getSpeed() * 3.6;
+            double speed = localisation.getSpeed() * 3.6;
 
             if (speed >= 0.1) {
 
@@ -100,7 +99,7 @@ public class LocationController implements LocationListener {
         }
 
         mapView.getController()
-                .animateTo(nouvelleLocalisation);
+                .animateTo(newLocalisation);
 
         mapView.setMapOrientation(
                 -azimuthAngleSpeed
