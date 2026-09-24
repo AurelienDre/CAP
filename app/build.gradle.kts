@@ -46,6 +46,9 @@ dependencies {
 
     implementation(libs.osmdroid.android)
 
+    implementation(libs.volley)
+    implementation(libs.glide)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
