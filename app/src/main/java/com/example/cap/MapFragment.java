@@ -140,7 +140,6 @@ public class MapFragment extends Fragment {
         binding.addPlaceButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(MapFragment.this)
                         .navigate(R.id.action_MapFragment_to_AddFragment)
-                                //,bundleOf("currentPos" position)
         );
 
         myOpenMap = binding.map;
