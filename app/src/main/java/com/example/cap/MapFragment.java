@@ -1,7 +1,5 @@
 package com.example.cap;
 
-import static androidx.core.os.BundleKt.bundleOf;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -30,6 +28,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
+
+import java.util.ArrayList;
 
 public class MapFragment extends Fragment {
 
@@ -109,6 +109,15 @@ public class MapFragment extends Fragment {
         myOpenMap.invalidate();
     }
 
+    private ArrayList<DivingSite> getDivingSites(){
+        DivingSite conche = new DivingSite("fort de la conché", 48.6808, -1.9848);
+        DivingSite plouf = new DivingSite("trou d'eau", 45.6808, -1);
+
+        ArrayList<DivingSite> DivingList = new ArrayList<>();
+        DivingList.add(conche);
+        DivingList.add(plouf);
+        return DivingList;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -172,6 +181,17 @@ public class MapFragment extends Fragment {
         );
 
         myOpenMap.setMinZoomLevel(2.25);
+        for (DivingSite site : getDivingSites()) {
+            Marker marker = new Marker(myOpenMap);
+            marker.setPosition(site.getGeoPoint());
+            marker.setTitle(site.getName());
+            marker.setSubDescription(site.getDescription());
+            //marker.setIcon();
+
+            myOpenMap.getOverlays().add(marker);
+        }
+
+        myOpenMap.invalidate();
 
         if (savedInstanceState == null) {
             // Position initiale uniquement au premier lancement

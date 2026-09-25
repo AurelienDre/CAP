@@ -1,5 +1,7 @@
 package com.example.cap;
 
+import org.osmdroid.util.GeoPoint;
+
 public class DivingSite {
     private String name;
     private double latitude;
@@ -23,6 +25,10 @@ public class DivingSite {
     public double getLongitude() {
         return longitude;
     }
+
+    public GeoPoint getGeoPoint(){
+        return new GeoPoint(latitude,longitude);
+    };
 
     public void setDescription(String description){
         this.description = description;
