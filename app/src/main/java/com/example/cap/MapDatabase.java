@@ -1,64 +1,58 @@
 package com.example.cap;
 
-import android.widget.Toast;
+import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MapDatabase {
-    // function for making a HTTP request using Volley and
-// inserting the image in the ImageView using Glide library
-    private void loadDogImage(context context) {
 
-        // getting a new volley request queue for making new requests
-        RequestQueue volleyQueue = Volley.newRequestQueue();
-        // url of the api through which we get random dog images
-        String url = "https://dog.ceo/api/breeds/image/random";
+    private final RequestQueue queue;
+    private final String url;
+    public static final String TAG = "MapDatabase";
 
-        // since the response we get from the api is in JSON, we
-        // need to use `JsonObjectRequest` for parsing the
-        // request response
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                // we are using GET HTTP request method
-                Request.Method.GET,
-                // url we want to send the HTTP request to
-                url,
-                // this parameter is used to send a JSON object to the
-                // server, since this is not required in our case,
-                // we are keeping it `null`
-                null,
+    public MapDatabase(Context context, String URL){
+        this.queue = Volley.newRequestQueue(context);
+        this.url = URL;
+    }
 
-                // lambda function for handling the case
-                // when the HTTP request succeeds
-                (Response.Listener<JSONObject>) response -> {
-                    // get the image url from the JSON object
-                    String dogImageUrl;
+    public interface ResponseListener<T> {
+        void onResponse(T response);
+    }
+
+    public void getDivingList(ResponseListener<ArrayList<String>> listener){
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(
+                Request.Method.GET, url,null,
+                response -> {
                     try {
-                        dogImageUrl = response.getString("message");
-                        // load the image into the ImageView using Glide.
-                        Glide.with(MainActivity.this).load(dogImageUrl).into(mDogImageView);
+                        ArrayList<String> divingList = new ArrayList<>();
+                        JSONArray array = response.getJSONArray("message");
+                        for (int i = 0; i < array.length(); i++) {
+                            divingList.add(array.getString(i));
+                        }
+                        listener.onResponse(divingList);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 },
-
-                // lambda function for handling the case
-                // when the HTTP request fails
-                (Response.ErrorListener) error -> {
-                    // make a Toast telling the user
-                    // that something went wrong
-                    Toast.makeText(MainActivity.this, "Some error occurred! Cannot fetch dog image", Toast.LENGTH_LONG).show();
-                }
+                (Response.ErrorListener) error -> {}
         );
 
-        // add the json request object created above
-        // to the Volley request queue
-        volleyQueue.add(jsonObjectRequest);
+        jsonRequest.setTag(TAG);
+        this.queue.add(jsonRequest);
+    }
+
+    public void stopConnection(){
+        if (this.queue != null) {
+            this.queue.cancelAll(TAG);
+        }
     }
 }
