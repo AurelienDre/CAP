@@ -35,6 +35,7 @@ public class MapFragment extends Fragment {
 
     private FragmentMapBinding binding;
     private MapView myOpenMap;
+    private MapDatabase mapDb;
     private Marker positionMarker;
 
     private void checkLocationPermission()  {
@@ -134,6 +135,8 @@ public class MapFragment extends Fragment {
                 "CAP/1.0 (Android; com.example.cap)"
         );
 
+
+
         binding = FragmentMapBinding.inflate(
                 inflater,
                 container,
@@ -145,6 +148,8 @@ public class MapFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mapDb = new MapDatabase(this.requireContext(), "http://test.com");
 
         binding.addPlaceButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(MapFragment.this)
@@ -221,6 +226,9 @@ public class MapFragment extends Fragment {
 
         // Ajout du GPS
         checkLocationPermission();
+
+        mapDb.getDivingList(divingList -> {System.out.println(divingList);});
+
     }
 
     @Override
@@ -259,5 +267,6 @@ public class MapFragment extends Fragment {
             myOpenMap = null;
         }
         binding = null;
+        mapDb.stopConnection();
     }
 }

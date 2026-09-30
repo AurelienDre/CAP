@@ -12,8 +12,10 @@ navigationUi = "2.6.0"
 osmdroidAndroid = "6.1.20"
 navigationFragmentKtx = "2.10.1"
 navigationUiKtx = "2.10.1"
+volley = "1.2.1"
 
 [libraries]
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
